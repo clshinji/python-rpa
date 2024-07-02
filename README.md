@@ -38,7 +38,7 @@ pip install -r requrements.txt
 python sample_calc.py
 ```
 
-ちゃんと動作すると、電卓が起動して足し算をしてくれます。<br />もしうまく動かない場合は、pythonの実行環境がちゃんとインストールできているか、必要なライブラリがインストールできているか、`assets`ディレクトリ内の画像とご自身の環境のアプリの画面が合うか、等を確かめてください。<br />[電卓RPAデモ動画](https://github.com/clshinji/python-rpa/demo/demo_calc.mp4)
+ちゃんと動作すると、電卓が起動して足し算をしてくれます。<br />もしうまく動かない場合は、pythonの実行環境がちゃんとインストールできているか、必要なライブラリがインストールできているか、`assets`ディレクトリ内の画像とご自身の環境のアプリの画面が合うか、等を確かめてください。<br />[電卓RPAデモ動画](https://github.com/clshinji/python-rpa/blob/d9a89800858db2495be0b07835715ff7d3af0442/demo/demo_calc.mp4)
 
 続いて、エクセルを起動するだけのサンプルコードを試してみます。<br />これも動けばバッチリです！
 
