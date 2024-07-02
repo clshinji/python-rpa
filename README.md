@@ -5,7 +5,7 @@
 ## 1. ローカル環境にクローンする
 最初にこのリポジトリをクローンします。<br />ターミナルを起動して、任意のディレクトリ（ドキュメント等）で次のコマンドを実行します。
 ``` bash
-> git clone https://github.com/clshinji/python-rpa.git
+git clone https://github.com/clshinji/python-rpa.git
 ```
 
 ## 2. 必要なライブラリをインストールする
@@ -15,12 +15,12 @@
 
 念のため、インストールされているPythonのバージョンをチェックします。<br />(後ろについている `-V`は大文字のブイです)
 ``` bash
-> python -V
+python -V
 ```
 
 もしこれでエラーが出る場合は、パスが通っていない可能性が高いので、次のコマンドも試してみてください。<br />これでうまくいく場合は、以降のコマンドで`python`という箇所は、全て`python3`に置き換えればOKです。
 ``` bash
-> python3 -V
+python3 -V
 ```
 出力結果の例（インストールされているPythonのバージョンが表示されます）
 ``` bash
