@@ -2,6 +2,7 @@ from time import sleep
 import subprocess
 import pyautogui as pag
 import src.pag_tools as pag_tools
+import src.helpers as helpers
 
 
 def main():
@@ -13,14 +14,8 @@ def main():
 
     # 共通設定
     MEAS_TIME = 5    # 一時的に5に変更、後で60に戻す
-    MEAS_LIST = [
-        {"f0": 50, "BW": 50, "SN": "50BW50", "BW_CHANGE": False},
-        {"f0": 80, "BW": 50, "SN": "80BW50", "BW_CHANGE": False},
-        {"f0": 100, "BW": 50, "SN": "100BW50", "BW_CHANGE": False},
-        {"f0": 130, "BW": 50, "SN": "130BW50", "BW_CHANGE": False},
-        {"f0": 150, "BW": 50, "SN": "150BW50", "BW_CHANGE": False},
-        {"f0": 200, "BW": 50, "SN": "200BW50", "BW_CHANGE": False},
-    ]
+    # CSVから測定条件を読み込む
+    MEAS_LIST = helpers.getMeasList("部分放電測定を行うフィルタの組み合わせ.csv")
 
     # 部分放電測定器用のRPA
     # クリック対象の画像をキャプチャして assets ディレクトリに入れておく
@@ -48,7 +43,7 @@ def main():
     for idx, MEAS in enumerate(MEAS_LIST):
         print(f"{idx}回目の測定    条件> {MEAS}")
         if idx != 0:
-            # 2回目以降
+            # 2回目だけ（1回目はスキップ）
             # Calモードに入る
             # pag_tools.move_click('assets\\pd_cal_toggle.png')
             pag_tools.move_click_try2('assets\\pd_cal_toggle.png', 'assets\\pd_cal_toggle2.png')
@@ -56,6 +51,7 @@ def main():
             # 設定ウィンドウを表示させる
             pag_tools.move_click('assets\\pd_cal_f0.png')
             sleep(2)
+            # BWが変わったときだけBWの設定を変更する操作を実行する
             if MEAS['BW_CHANGE']:
                 pag_tools.move_click('assets\\pd_cal_bw.png')
                 sleep(4)
@@ -82,6 +78,10 @@ def main():
         sleep(2)
         pag_tools.move_click('assets\\pd_meas_enter.png')
         sleep(MEAS_TIME + 5)    # 測定が終わるまで待機
+
+        # デバッグ用 ループを抜ける
+        if idx >= 5:
+            return
 
     pag.alert(text='自動操作が完了しました', title='自動処理完了メッセージ', button='OK')
 
