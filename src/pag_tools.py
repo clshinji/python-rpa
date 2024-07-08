@@ -1,4 +1,5 @@
 import pyautogui as pag
+import pyperclip
 from time import sleep
 
 
@@ -54,3 +55,52 @@ def move_click_try2(button1, button2):
             pag.click()
         except TypeError:
             print('Image not found')
+
+
+def move_click_cal_textarea(button, x_init, y_init):
+# if __name__ == '__main__':
+    """ マウスを移動してクリックする（PD-Cal-f0用）
+    Args:
+        button (str): マウス移動先のターゲット画像パス
+    """
+    try:
+        button_locate = find_image_coordinate(image_path=button, time_out=10, confidence=0.9)
+        x, y = pag.center(button_locate)
+        print(f"x:{x}, y:{y}")
+        pag.moveTo(x + x_init, y + y_init)
+        pag.click()
+    except TypeError:
+        print('Image not found')
+
+
+def input_text(value):
+    """ テキストフォームに変数の値を入力する
+    Args:
+        value (any): 入力したい値
+    """
+    pyperclip.copy(value)
+    pag.hotkey("ctrl", "v")
+
+
+def key_bkspace(num):
+    """backspaceを num 回押す
+    Args:
+        num (int): キーを押す回数
+    """
+    pag.press('backspace', presses=num)
+
+
+def key_del(num):
+    """delを num 回押す
+    Args:
+        num (int): キーを押す回数
+    """
+    pag.press('del', presses=num)
+
+
+def key_enter(num):
+    """Enterを num 回押す
+    Args:
+        num (int): キーを押す回数
+    """
+    pag.press('enter', presses=num)
