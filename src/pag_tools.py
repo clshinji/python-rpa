@@ -1,4 +1,5 @@
 import pyautogui as pag
+from time import sleep
 
 
 def find_image_coordinate(image_path, time_out, confidence):
@@ -8,7 +9,7 @@ def find_image_coordinate(image_path, time_out, confidence):
     :param time_out: 画像検索待ち時間(秒)。
     :param confidence: 信頼感。数値が高いほど信頼できるが、見つからない確率も上がる。(0~1?)
     :return: 画像の座標。
-    """  
+    """
     for _ in range(time_out):
         locate = pag.locateOnScreen(image_path, confidence=confidence)
         if locate is not None:
