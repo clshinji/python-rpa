@@ -57,6 +57,16 @@ def move_click_try2(button1, button2):
             print('Image not found')
 
 
+def analyze_check_overwrite(button):
+    OL_CHECK = False
+    try:
+        pag.locateOnScreen(image_path=button, time_out=10, confidence=0.9)
+        OL_CHECK = True
+    except Exception as e:
+        print("Over write window -> Not Found")
+    return OL_CHECK
+
+
 def move_click_cal_textarea(button, x_init, y_init):
 # if __name__ == '__main__':
     """ マウスを移動してクリックする（PD-Cal-f0用）

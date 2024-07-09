@@ -63,4 +63,9 @@ deactivate
 
 ## 4. 実行用ファイルで 1 発スタート
 
-`PD_MEAS_RUN.ps1`をダブルクリックして実行します。<br />以上！！<br />(上記の操作が自動で実行されるようになっています…)
+`pyinstaller`で作成した実行ファイルが`dist/pd_rpa.exe`として保存されています。<br />これのショートカットをデスクトップに作って、実行すると１発で実行できます！<br />以上！！<br />(上記の操作が自動で実行されるようになっています…)
+
+（参考）Pyinstallerで実行ファイルを作るときのコマンド
+```bash
+pyinstaller --onefile --windowed --icon=pd_rpa_iso.ico --add-data "assets;assets" pd_rpa.py
+```
