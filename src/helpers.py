@@ -17,7 +17,7 @@ def getMeasList(fpath):
     df['BW_CHANGE'] = df['BW_kHz'].diff().ne(0)
 
     # 1行目は False に設定
-    df.loc[0, 'BW_CHANGE'] = False
+    # df.loc[0, 'BW_CHANGE'] = False
 
     # データフレームをリストに変換する
     result_list = df.to_dict(orient='records')

@@ -73,6 +73,30 @@ def move_click_cal_textarea(button, x_init, y_init):
         print('Image not found')
 
 
+def move_click_try2_cal_textarea(button1, button2, x_init1, y_init1, x_init2, y_init2):
+# if __name__ == '__main__':
+    """ マウスを移動してクリックする（PD-Cal-f0用）
+    Args:
+        button (str): マウス移動先のターゲット画像パス
+    """
+    try:
+        button_locate = find_image_coordinate(image_path=button1, time_out=10, confidence=0.9)
+        x, y = pag.center(button_locate)
+        print(f"x:{x}, y:{y}")
+        pag.moveTo(x + x_init1, y + y_init1)
+        pag.click()
+    except Exception as e:
+        print(f"Image not found -> Try 2nd Image [Image path]{button1}")
+        try:
+            button_locate = find_image_coordinate(image_path=button2, time_out=10, confidence=0.9)
+            x, y = pag.center(button_locate)
+            print(f"x:{x}, y:{y}")
+            pag.moveTo(x + x_init2, y + y_init2)
+            pag.click()
+        except TypeError:
+            print('Image not found')
+
+
 def input_text(value):
     """ テキストフォームに変数の値を入力する
     Args:
@@ -104,3 +128,11 @@ def key_enter(num):
         num (int): キーを押す回数
     """
     pag.press('enter', presses=num)
+
+
+def key_CtrlA2del():
+    """Ctrl + A を押した後に del を押す
+    """
+    with pag.hold('ctrl'):
+        pag.press('A')
+    pag.press('del')
