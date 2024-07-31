@@ -64,12 +64,14 @@ def main():
         # Calを初期状態に設定する
         # 測定時間を設定
         pag_tools.move_click(resource_path('assets\\pd_cal_MeasTime.png'))
+        # pag_tools.move_click('assets\\pd_cal_MeasTime.png')
         pag_tools.key_del(3)
         pag_tools.input_text(MEAS_TIME)
         pag_tools.key_enter(1)
         sleep(2)
         # 測定インターバルを設定
         pag_tools.move_click(resource_path('assets\\pd_cal_IntervalTime.png'))
+        # pag_tools.move_click('assets\\pd_cal_IntervalTime.png')
         pag_tools.key_del(3)
         pag_tools.input_text(0)
         pag_tools.key_enter(1)
@@ -80,54 +82,80 @@ def main():
             # 2回目だけ（1回目はスキップ）←f0=200kHzならBWの変更が容易のため１回目から設定するように変更
             # Calモードに入る
             pag_tools.move_click_try2(resource_path('assets\\pd_cal_toggle.png'), resource_path('assets\\pd_cal_toggle2.png'))
+            # pag_tools.move_click_try2('assets\\pd_cal_toggle.png', 'assets\\pd_cal_toggle2.png')
             sleep(2)
             # 設定ウィンドウを表示させる
             pag_tools.move_click(resource_path('assets\\pd_cal_f0.png'))
+            # pag_tools.move_click('assets\\pd_cal_f0.png')
             sleep(3)
             # BWが変わったときだけBWの設定を変更する操作を実行する
             if MEAS['BW_CHANGE']:
                 pag_tools.move_click(resource_path('assets\\pd_cal_bw.png'))
+                # pag_tools.move_click('assets\\pd_cal_bw.png')
                 sleep(4)
-                # BWをうまく変更できるように、一時的にf0を200kHzに変更する
-                pag_tools.move_click_cal_textarea(resource_path('assets\\pd_cal_f0_textarea.png'), 70, 340)
-                sleep(3)
-                pag_tools.key_bkspace(9)
-                pag_tools.input_text(200)    # BW変更のために200kHzに一時的に設定
-                pag_tools.key_enter(1)
-                pag.click()
-                sleep(2)
+                # 前回までの BWによって切り替えを実施
+                if MEAS['BW_kHz'] <= 300 and MEAS['BW_CURRENT'] <= 300:
+                    print(f"パターン1: {MEAS=}")
+                    # BW変更のため、一時的にf0=200kHzに変更
+                    pag_tools.change_f0(200)
+                elif MEAS['BW_kHz'] <= 300 and MEAS['BW_CURRENT'] > 300:
+                    print(f"パターン2: {MEAS=}")
+                    # BW変更のため、一時的にf0=2000kHzに変更
+                    pag_tools.change_f0(2000)
+                    # BWを一時的に300kHzに変更
+                    pag_tools.move_click_cal_textarea(resource_path('assets\\pd_cal_bw_textarea.png'), 70, 340)
+                    # pag_tools.move_click_cal_textarea('assets\\pd_cal_bw_textarea.png', 70, 340)
+                    sleep(2)
+                    pag_tools.move_click(resource_path(f'assets\\pd_cal_bw_to300.png'))
+                    # pag_tools.move_click(f'assets\\pd_cal_bw_to300.png')
+                    # BW変更のため、一時的にf0=200kHzに変更
+                    pag_tools.change_f0(200)
+                elif MEAS['BW_kHz'] >= 100 and MEAS['BW_CURRENT'] >= 100:
+                    print(f"パターン3: {MEAS=}")
+                    # BW変更のため、一時的にf0=2000kHzに変更
+                    pag_tools.change_f0(2000)
+                elif MEAS['BW_kHz'] >= 100 and MEAS['BW_CURRENT'] < 100:
+                    print(f"パターン4: {MEAS=}")
+                    # BW変更のため、一時的にf0=200kHzに変更
+                    pag_tools.change_f0(200)
+                    # BWを一時的に300kHzに変更
+                    pag_tools.move_click_cal_textarea(resource_path('assets\\pd_cal_bw_textarea.png'), 70, 340)
+                    # pag_tools.move_click_cal_textarea('assets\\pd_cal_bw_textarea.png', 70, 340)
+                    sleep(2)
+                    pag_tools.move_click(resource_path(f'assets\\pd_cal_bw_to300.png'))
+                    # pag_tools.move_click(f'assets\\pd_cal_bw_to300.png')
+                    # BW変更のため、一時的にf0=2000kHzに変更
+                    pag_tools.change_f0(2000)
                 # BWを変更する
                 pag_tools.move_click_cal_textarea(resource_path('assets\\pd_cal_bw_textarea.png'), 70, 340)
-                sleep(3)
-                if MEAS['BW_kHz'] == 300:
-                    # 50 -> 300 に変更する
-                    pag_tools.move_click(resource_path('assets\\pd_cal_bw_50to300.png'))
-                elif MEAS['BW_kHz'] == 50:
-                    # 300 -> 50 に変更する
-                    pag_tools.move_click(resource_path('assets\\pd_cal_bw_300to50.png'))
-            # f0の設定
-            pag_tools.move_click_cal_textarea(resource_path('assets\\pd_cal_f0_textarea.png'), 70, 340)
-            sleep(3)
-            pag_tools.key_bkspace(9)
-            pag_tools.input_text(MEAS['f0_kHz'])
-            pag_tools.key_enter(1)
-            pag.click()
-            sleep(2)
+                # pag_tools.move_click_cal_textarea('assets\\pd_cal_bw_textarea.png', 70, 340)
+                sleep(2)
+                pag_tools.move_click(resource_path(f'assets\\pd_cal_bw_to{int(MEAS['BW_kHz'])}.png'))
+                # pag_tools.move_click(f'assets\\pd_cal_bw_to{int(MEAS['BW_kHz'])}.png')
+                sleep(2)
+            # f0を変更する
+            pag_tools.change_f0(MEAS['f0_kHz'])
+            sleep(1)
+
             # Calモードを抜ける
             pag_tools.move_click_cal_textarea(resource_path('assets\\pd_cal_toggle_off.png'), 0, 300)
+            # pag_tools.move_click_cal_textarea('assets\\pd_cal_toggle_off.png', 0, 300)
             sleep(2)
 
             # 測定開始
             pag_tools.move_click(resource_path('assets\\pd_start.png'))
+            # pag_tools.move_click('assets\\pd_start.png')
             sleep(2)
 
             if idx == 0:
                 # 初回のみ保存フォルダを設定する
                 pag_tools.move_click(resource_path('assets\\pd_meas_dir_open.png'))
+                # pag_tools.move_click('assets\\pd_meas_dir_open.png')
                 sleep(2)
                 # フォルダパスを入力する
                 # pag_tools.move_click_cal_textarea(resource_path('assets\\pd_meas_dir_path_textarea.png'), 900, 40)
                 pag_tools.move_click_try2_cal_textarea(resource_path('assets\\pd_meas_dir_path_textarea.png'), resource_path('assets\\pd_analyze_dir_path_textarea.png'), 900, 40, 900, 40)
+                # pag_tools.move_click_try2_cal_textarea('assets\\pd_meas_dir_path_textarea.png', 'assets\\pd_analyze_dir_path_textarea.png', 900, 40, 900, 40)
                 sleep(2)
                 pag_tools.key_CtrlA2del()    # 既に入力されている内容を全て消去
                 pag_tools.input_text(TEMP_DIR)
@@ -135,14 +163,17 @@ def main():
                 sleep(2)
                 # フォルダを指定する
                 pag_tools.move_click(resource_path('assets\\pd_meas_dir_path_set.png'))
+                # pag_tools.move_click('assets\\pd_meas_dir_path_set.png')
                 sleep(2)
 
             # シリアルNoに測定条件をメモする
             pag_tools.move_click_cal_textarea(resource_path('assets\\pd_meas_serialno.png'), 80, 30)
+            # pag_tools.move_click_cal_textarea('assets\\pd_meas_serialno.png', 80, 30)
             pag_tools.key_bkspace(20)
             pag_tools.input_text(MEAS['Serial_No'])
             sleep(2)
             pag_tools.move_click(resource_path('assets\\pd_meas_enter.png'))
+            # pag_tools.move_click('assets\\pd_meas_enter.png')
             sleep(MEAS_TIME + 5)    # 測定が終わるまで待機
 
             # デバッグ用 ループを抜ける

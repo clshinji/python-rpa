@@ -1,6 +1,14 @@
 import pyautogui as pag
 import pyperclip
 from time import sleep
+import sys
+import os
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 
 def find_image_coordinate(image_path, time_out, confidence):
@@ -146,3 +154,18 @@ def key_CtrlA2del():
     with pag.hold('ctrl'):
         pag.press('A')
     pag.press('del')
+
+
+def change_f0(f0_SET):
+    """CAL->f0を変更する
+    Args:
+        f0_SET (int): 変更後のf0(kHz)
+    """
+    move_click_cal_textarea(resource_path('assets\\pd_cal_f0_textarea.png'), 70, 340)
+    # move_click_cal_textarea('assets\\pd_cal_f0_textarea.png', 70, 340)
+    sleep(3)
+    key_bkspace(9)
+    input_text(f0_SET)    # BW変更のために200kHzに一時的に設定
+    key_enter(1)
+    pag.click()
+    sleep(2)

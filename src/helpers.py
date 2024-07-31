@@ -16,8 +16,9 @@ def getMeasList(fpath):
     # BW_kHzが変化している行はTrue
     df['BW_CHANGE'] = df['BW_kHz'].diff().ne(0)
 
-    # 1行目は False に設定
-    # df.loc[0, 'BW_CHANGE'] = False
+    # 直前の BW_kHz を記録しておく
+    df['BW_CURRENT'] = df['BW_kHz'].shift(1)
+    df.loc[0, 'BW_CURRENT'] = df.loc[0, 'BW_kHz']
 
     # データフレームをリストに変換する
     result_list = df.to_dict(orient='records')
